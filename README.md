@@ -1,4 +1,34 @@
-# Unity 3D Mobile Template for Hyper Casual game
+# Unity 3D Mobile Template for Hyper Casual gameusing UnityEngine;
+
+public class MotorcycleController : MonoBehaviour
+{
+    public float speed = 10f;         // viteză înainte
+    public float turnSpeed = 50f;     // viteza la înclinare
+    public float jumpForce = 5f;      // sărituri (dacă vrei off-road)
+    private Rigidbody rb;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
+    void Update()
+    {
+        // Mișcare înainte
+        rb.MovePosition(transform.position + transform.forward * speed * Time.deltaTime);
+
+        // Înclinare stânga/dreapta (tilt telefon sau săgeți)
+        float h = Input.GetAxis("Horizontal"); // stânga/dreapta
+        transform.Rotate(0, h * turnSpeed * Time.deltaTime, 0);
+
+        // Salt (dacă e off-road)
+        if (Input.GetButtonDown("Jump") && Mathf.Abs(rb.velocity.y) < 0.01f)
+        {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
+    }
+}
+
 
 
 Overview
